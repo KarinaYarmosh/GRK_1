@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <io.h>
 
 #include "Shader_Loader.cpp"
 #include "Render_Utils.cpp"
@@ -21,8 +22,8 @@ void renderScene(GLFWwindow* window)
     // Aktywowanie shadera
     glUseProgram(program);
 
-    //wywolaj funkcje drawVAOIndexed na quadVAO 
-
+    //wywolaj funkcje drawVAOIndexed na quadVAO
+    Core::drawVAOIndexed(quadVAO, 6);
     // Wylaczenie shadera
     glUseProgram(0);
 
@@ -39,6 +40,19 @@ void init(GLFWwindow* window) {
     program = shaderLoader.CreateProgram("../shaders/shader_1_1.vert", "../shaders/shader_1_1.frag");
 
     //Stworz czworokat przy uzyciu 4 wierzcholkow i 6 indeksow (typ: const int []) zaladuj go do za pomoca initVAOIndexed do quadVAO
+    float points[] = {
+            -0.5,-0.5,0.,1.,
+            0.5,-0.5,0.,1.,
+            0.5,0.5,0.,1.,
+            -0.5,0.5,0.,1.,
+    };
+    unsigned int ix[]={
+            0,1,3,
+            1,2,3,
+    };
+
+    //4 elem po 4 w nim
+    quadVAO = Core::initVAOIndexed(points, ix, 4, 4,6);
 }
 
 void shutdown(GLFWwindow* window)

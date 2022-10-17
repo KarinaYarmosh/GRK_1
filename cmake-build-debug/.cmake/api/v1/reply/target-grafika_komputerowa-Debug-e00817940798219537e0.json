@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "untitled2.exe"
+			"path" : "grafika_komputerowa.exe"
 		},
 		{
-			"path" : "untitled2.pdb"
+			"path" : "grafika_komputerowa.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -15,7 +15,6 @@
 		[
 			"add_executable",
 			"target_link_libraries",
-			"target_include_directories",
 			"include_directories"
 		],
 		"files" : 
@@ -30,31 +29,25 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 6,
+				"line" : 7,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 10,
+				"line" : 11,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 12,
+				"line" : 13,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 7,
-				"parent" : 0
-			},
-			{
-				"command" : 3,
-				"file" : 0,
-				"line" : 8,
+				"line" : 9,
 				"parent" : 0
 			}
 		]
@@ -72,11 +65,11 @@
 			[
 				{
 					"backtrace" : 4,
-					"path" : "C:/Users/DAN/CLionProjects/grafika_komputerowa/include"
+					"path" : "C:/Users/Karisha/CLionProjects/untitled4/grafika/include"
 				},
 				{
-					"backtrace" : 5,
-					"path" : "C:/Users/DAN/CLionProjects/grafika_komputerowa/shaders"
+					"backtrace" : 4,
+					"path" : "C:/Users/Karisha/CLionProjects/untitled4/grafika/shaders"
 				}
 			],
 			"language" : "CXX",
@@ -86,7 +79,7 @@
 			]
 		}
 	],
-	"id" : "untitled2::@6890427a1f51a3e7e1df",
+	"id" : "grafika_komputerowa::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -135,14 +128,19 @@
 				"role" : "libraries"
 			},
 			{
+				"backtrace" : 3,
+				"fragment" : "-lglfw3",
+				"role" : "libraries"
+			},
+			{
 				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
 				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"
 	},
-	"name" : "untitled2",
-	"nameOnDisk" : "untitled2.exe",
+	"name" : "grafika_komputerowa",
+	"nameOnDisk" : "grafika_komputerowa.exe",
 	"paths" : 
 	{
 		"build" : ".",

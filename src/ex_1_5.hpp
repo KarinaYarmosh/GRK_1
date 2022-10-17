@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <io.h>
 
 #include "Shader_Loader.cpp"
 #include "Render_Utils.cpp"
@@ -15,30 +16,47 @@ Core::Shader_Loader shaderLoader;
 
 void renderScene(GLFWwindow* window)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
-	// Zmienna "time" przechowuje czas ktory uplynal od uruchomienia aplikacji
-	float time = glfwGetTime();
+    // Zmienna "time" przechowuje czas ktory uplynal od uruchomienia aplikacji
+    float time = glfwGetTime();
 
-	glUseProgram(program);
+    glUseProgram(program);
 
-	glm::mat4 rotation;
-
-	// ZADANIE: Narysuj dwa czworokaty, jeden ruszajacy sie, drugi obracajacy sie 
-	// Do rysowania ruszajacego sie czworokatu mozesz uzyc kodu z poprzedniego zadania, zmodyfikuj tylko macierz translacji, zeby byly obok siebie, nie jeden na drugim
-	// Uzyj zmiennej "time" do zdefiniowania takiej macierzy rotacji, aby czworokat obracal sie wokol srodka (znajdz odpowiednia macierz 4x4 w internecie)
-	// Kat obrotu podajemy w radianach
-
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // ! Macierz translation jest definiowana wierszowo dla poprawy czytelnosci. OpenGL i GLM domyslnie stosuje macierze kolumnowe, dlatego musimy ja transponowac !
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    glm::mat4 rotation =
+            { cos(time),-sin(time),0,0.5,
+              sin(time),cos(time),0,0.5,
+              0,0, 1,0.5,
+              0,0,0,1 };
 
     rotation = glm::transpose(rotation);
-	glUniformMatrix4fv(glGetUniformLocation(program, "transformation"), 1, GL_FALSE, (float*)&rotation);
 
-	// Uzyj kodu z poprzednich cwiczen do narysowania czworokata
+    glm::mat4 translation =
+            { 1,0,0,0,
+              0,1,0,sin(time),
+              0,0,1,0,
+              0,0,0,1 };
 
-	glUseProgram(0);
+    translation = glm::transpose(translation);
+
+    glUniformMatrix4fv(glGetUniformLocation(program, "transformation"), 1, GL_FALSE, (float*)&rotation);
+    Core::drawVAOIndexed(quadVAO, 6);
+    glUniformMatrix4fv(glGetUniformLocation(program, "transformation"), 1, GL_FALSE, (float*)&translation);
+    Core::drawVAOIndexed(quadVAO, 6);
+    glUseProgram(0);
 
     glfwSwapBuffers(window);
+    // ZADANIE: Narysuj dwa czworokaty, jeden ruszajacy sie, drugi obracajacy sie
+    // Do rysowania ruszajacego sie czworokatu mozesz uzyc kodu z poprzedniego zadania, zmodyfikuj tylko macierz translacji, zeby byly obok siebie, nie jeden na drugim
+    // Uzyj zmiennej "time" do zdefiniowania takiej macierzy rotacji, aby czworokat obracal sie wokol srodka (znajdz odpowiednia macierz 4x4 w internecie)
+    // Kat obrotu podajemy w radianach
+
+
+    // Uzyj kodu z poprzednich cwiczen do narysowania czworokata
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -48,9 +66,22 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void init(GLFWwindow* window) {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    program = shaderLoader.CreateProgram("../shaders/shader_1_1.vert", "../shaders/shader_1_1.frag");
+    program = shaderLoader.CreateProgram("../shaders/shader_1_2.vert", "../shaders/shader_1_2.frag");
 
     //Przekopiuj kod do ladowania z poprzedniego zadania
+
+    float points[] = {
+            -0.2,-0.2,0.,1.,
+            0.2,-0.2,0.,1.,
+            0.2,0.2,0.,1.,
+            -0.2,0.2,0.,1.,
+    };
+    unsigned int ix[] = {
+            0,1,3,
+            1,2,3,
+    };
+    //4 elem po 4 w nim
+    quadVAO = Core::initVAOIndexed(points, ix, 4, 4, 6);
 }
 
 void shutdown(GLFWwindow* window)
